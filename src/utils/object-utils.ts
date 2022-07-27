@@ -1,4 +1,4 @@
-export default class ObjectUtils {
+export class ObjectUtils {
   private constructor() { }
 
   public static copy(from: any, to: any): void {

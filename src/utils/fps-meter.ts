@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-export default function launchFPSMeter() {
+export function launchFPSMeter() {
   const script = document.createElement('script');
 
   script.onload = function () {

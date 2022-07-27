@@ -1,5 +1,5 @@
-import IWorldGridConfig from "./world-grid-config.interface";
+import { IWorldGridConfig } from "./world-grid-config.interface";
 
-export default interface IWorldConfig {
+export interface IWorldConfig {
   grid: IWorldGridConfig;
 }

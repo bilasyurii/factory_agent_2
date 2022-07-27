@@ -1,8 +1,8 @@
-import Tile from "../tile/tile";
-import IWorldConfig from "./world-config.interface";
-import IWorldGridConfig from "./world-grid-config.interface";
+import { Tile } from "../tile/tile";
+import { IWorldConfig } from "./world-config.interface";
+import { IWorldGridConfig } from "./world-grid-config.interface";
 
-export default class World {
+export class World {
   private grid: Tile[][] = [];
 
   constructor(config: IWorldConfig) {

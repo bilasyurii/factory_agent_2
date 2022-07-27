@@ -1,4 +1,4 @@
-export default interface IWorldGridConfig {
+export interface IWorldGridConfig {
   cols: number;
   rows: number;
 }
