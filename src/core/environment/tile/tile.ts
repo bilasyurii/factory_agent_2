@@ -3,7 +3,7 @@ import { TileObject } from "./object/tile-object";
 export class Tile {
   private x: number;
   private y: number;
-  private object: TileObject;
+  private object: TileObject = null;
 
   constructor(x: number, y: number) {
     this.x = x;

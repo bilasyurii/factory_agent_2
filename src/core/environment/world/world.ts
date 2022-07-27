@@ -1,3 +1,4 @@
+import { TileObject } from "../tile/object/tile-object";
 import { Tile } from "../tile/tile";
 import { IWorldConfig } from "./world-config.interface";
 import { IWorldGridConfig } from "./world-grid-config.interface";
@@ -7,6 +8,10 @@ export class World {
 
   constructor(config: IWorldConfig) {
     this.initGrid(config.grid);
+  }
+
+  public setTileObject(x: number, y: number, object: TileObject): void {
+    this.getTile(x, y)?.setObject(object);
   }
 
   private initGrid(config: IWorldGridConfig): void {
@@ -22,5 +27,10 @@ export class World {
         rowArray.push(new Tile(col, row));
       }
     }
+  }
+
+  private getTile(x: number, y: number): Tile {
+    const row = this.grid[y];
+    return row ? row[x] || null : null;
   }
 }

@@ -3,7 +3,7 @@ import { TileObjectType } from "./tile-object-type.enum";
 
 export class TileObject {
   private type: TileObjectType;
-  private tile: Tile;
+  private tile: Tile = null;
 
   constructor(type: TileObjectType) {
     this.type = type;
