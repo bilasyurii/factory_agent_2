@@ -1,4 +1,4 @@
-export default class MathUtils {
+export class Math2 {
   private constructor() { }
 
   public static normalizeLogarithmic(value: number, multiplier: number, logBase: number): number {
@@ -15,9 +15,9 @@ export default class MathUtils {
 
   public static normalizeLogarithmicSigned(value: number, multiplier: number, logBase: number): number {
     if (value < 0) {
-      return -MathUtils.normalizeLogarithmic(-value, multiplier, logBase);
+      return -Math2.normalizeLogarithmic(-value, multiplier, logBase);
     } else {
-      return MathUtils.normalizeLogarithmic(value, multiplier, logBase);
+      return Math2.normalizeLogarithmic(value, multiplier, logBase);
     }
   }
 }

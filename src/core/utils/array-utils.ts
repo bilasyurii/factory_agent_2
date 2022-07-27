@@ -1,4 +1,4 @@
-export default class ArrayUtils {
+export class ArrayUtils {
   private constructor() { }
 
   public static removeFirst<T>(array: T[], value: T): boolean {
