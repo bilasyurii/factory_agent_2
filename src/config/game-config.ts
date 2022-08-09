@@ -1,5 +1,11 @@
 export const GameConfig = {
   Width: 900,
   Height: 600,
-  CanvasId: 'factory_agent_2',
+  Decision: {
+    MaxCount: 4,
+  },
+  World: {
+    Rows: 5,
+    Cols: 5,
+  },
 };

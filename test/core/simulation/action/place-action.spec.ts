@@ -3,9 +3,9 @@ import * as sinon from "sinon";
 import { TileObjectType } from "../../../../src/core/environment/tile/object/tile-object-type.enum";
 import { World } from "../../../../src/core/environment/world/world";
 import { IActionContext } from "../../../../src/core/simulation/action/action-context.interface";
-import { PlaceObjectAction } from "../../../../src/core/simulation/action/place-object-action";
+import { PlaceAction } from "../../../../src/core/simulation/action/place-action";
 
-describe("PlaceObjectAction", function () {
+describe("PlaceAction", function () {
   it("should set tile's stored object", function () {
     const world = new World({
       grid: {
@@ -18,7 +18,7 @@ describe("PlaceObjectAction", function () {
     const x = 2;
     const y = 1;
     const objectType = TileObjectType.Factory;
-    const action = new PlaceObjectAction(x, y, objectType);
+    const action = new PlaceAction(x, y, objectType);
 
     const actionContext: IActionContext = {
       world,

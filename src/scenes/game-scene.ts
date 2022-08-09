@@ -6,5 +6,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   public update(): void {
+    // TODO update will happen here
   }
 }

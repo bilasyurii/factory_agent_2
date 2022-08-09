@@ -2,7 +2,7 @@ import { TileObject } from "../../environment/tile/object/tile-object";
 import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 import { AbstractAction } from "./action.abstract";
 
-export class PlaceObjectAction extends AbstractAction {
+export class PlaceAction extends AbstractAction {
   private x: number;
   private y: number;
   private type: TileObjectType;

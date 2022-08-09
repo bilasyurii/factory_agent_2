@@ -1,7 +1,7 @@
 const INT_32_MAX = 4294967296;
 
 export class Random2 {
-  public static instance = new Random2();
+  public static instance: Random2 = new Random2();
 
   private seed: number;
 
