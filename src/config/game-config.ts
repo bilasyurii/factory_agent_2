@@ -1,6 +1,7 @@
 export const GameConfig = {
   Width: 900,
   Height: 600,
+  StepInterval: 100,
   Decision: {
     MaxCount: 4,
   },

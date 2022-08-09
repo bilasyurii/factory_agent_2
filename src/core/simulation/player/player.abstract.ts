@@ -7,10 +7,10 @@ export abstract class AbstractPlayer {
   protected world: World;
   protected decisionConfigurator: DecisionConfigurator;
 
-  public prepare(config: IPlayerConfig): void {
+  public setup(config: IPlayerConfig): void {
     this.world = config.world;
     this.decisionConfigurator = config.decisionConfigurator;
-    this.onPrepared();
+    this.onSetup();
   }
 
   public abstract act(): AbstractAction;
@@ -19,7 +19,7 @@ export abstract class AbstractPlayer {
 
   public abstract destroy(): void;
 
-  protected onPrepared(): void {
-    // can be overriden in derived classes
+  protected onSetup(): void {
+    // can be overridden in derived classes
   }
 }

@@ -23,7 +23,7 @@ export class AIPlayer extends AbstractPlayer {
     this.agent = null;
   }
 
-  protected onPrepared(): void {
+  protected onSetup(): void {
     this.initAgent();
   }
 

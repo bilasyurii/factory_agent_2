@@ -10,24 +10,48 @@ export class Simulation {
   private world: World;
   private decisionConfigurator: DecisionConfigurator;
   private player: AbstractPlayer;
+  private ended: boolean;
+  private ready: boolean;
 
   constructor() {
     this.initRandom();
     this.initWorld();
     this.initDecisionConfigurator();
     this.initPlayer();
+    this.ended = false;
+    this.ready = true;
   }
 
-  public prepare(): void {
-    this.player.prepare({
-      world: this.world,
-      decisionConfigurator: this.decisionConfigurator,
-    });
+  public isEnded(): boolean {
+    return this.ended;
+  }
+
+  public reset(): void {
+    this.world.reset();
+    this.ended = false;
+    this.ready = true;
   }
 
   public step(): void {
-    this.decisionConfigurator.configure();
-    this.player.act();
+    if (!this.ready || this.ended) {
+      return;
+    }
+
+    const decisionConfigurator = this.decisionConfigurator;
+    decisionConfigurator.configure();
+
+    const world = this.world;
+    const action = this.player.act();
+    action.setup({
+      tileObjectType: decisionConfigurator.getTileObjectType(),
+      decisionOptions: decisionConfigurator.getOptions(),
+      world: world,
+    });
+    action.execute();
+
+    if (world.getEmptyTilesCount() < decisionConfigurator.getOptionsMaxCount()) {
+      this.ended = true;
+    }
   }
 
   private initRandom(): void {
@@ -53,5 +77,9 @@ export class Simulation {
 
   private initPlayer(): void {
     this.player = new AIPlayer();
+    this.player.setup({
+      world: this.world,
+      decisionConfigurator: this.decisionConfigurator,
+    });
   }
 }

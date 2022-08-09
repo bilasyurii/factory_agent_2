@@ -4,15 +4,20 @@ import { TileObject } from "../tile/object/tile-object";
 import { TileObjectType } from "../tile/object/tile-object-type.enum";
 import { Tile } from "../tile/tile";
 import { IWorldConfig } from "./world-config.interface";
-import { IWorldGridConfig } from "./world-grid-config.interface";
 
 export class World {
-  private grid: Tile[][] = [];
+  private grid: Tile[][];
   private rows: number;
   private cols: number;
 
   constructor(config: IWorldConfig) {
-    this.initGrid(config.grid);
+    this.rows = config.grid.rows;
+    this.cols = config.grid.cols;
+    this.initGrid();
+  }
+
+  public reset(): void {
+    this.initGrid();
   }
 
   public getRows(): number {
@@ -21,6 +26,10 @@ export class World {
 
   public getCols(): number {
     return this.cols;
+  }
+
+  public getTilesCount(): number {
+    return this.rows * this.cols;
   }
 
   public setTileObject(x: number, y: number, object: TileObject): void {
@@ -87,13 +96,12 @@ export class World {
     return types;
   }
 
-  private initGrid(config: IWorldGridConfig): void {
-    const grid = this.grid;
-    const rows = config.rows;
-    const cols = config.cols;
+  private initGrid(): void {
+    const grid: Tile[][] = [];
+    this.grid = grid;
 
-    this.rows = rows;
-    this.cols = cols;
+    const rows = this.rows;
+    const cols = this.cols;
 
     for (let row = 0; row < rows; ++row) {
       const rowArray: Tile[] = [];
