@@ -1,11 +1,12 @@
 import RL from './rl/rl';
 import { AbstractPlayer } from './player.abstract';
-import { World } from '../../environment/world/world';
 import { AbstractAction } from '../action/action.abstract';
-import { PlaceAction } from '../action/place-action';
+import { DecideAction } from '../action/decide-action';
+import { ObjectUtils } from '../../utils/object-utils';
 import { TileObjectType } from '../../environment/tile/object/tile-object-type.enum';
 
 export class AIPlayer extends AbstractPlayer {
+  private static readonly OBJECT_TYPES = ObjectUtils.enumToArray<TileObjectType>(TileObjectType);
   private agent: RL.DQNAgent = null;
 
   public act(): AbstractAction {
@@ -27,12 +28,9 @@ export class AIPlayer extends AbstractPlayer {
   }
 
   private initAgent(): void {
-    const world = this.world;
-    const states = world.getRows() * world.getCols();
-    const actions = 2;
     const environment: RL.IEnvironment = {
-      getNumStates: function () { return states; },
-      getMaxNumActions: function () { return actions; },
+      getNumStates: () => this.getStatesCount(),
+      getMaxNumActions: () => this.getActionsCount(),
     };
 
     this.agent = new RL.DQNAgent(environment, {
@@ -47,14 +45,56 @@ export class AIPlayer extends AbstractPlayer {
   }
 
   private readEnvironmentState(): RL.EnvironmentState {
-    const world = this.world;
     const environmentState: RL.EnvironmentState = [];
+    const decisionConfigurator = this.decisionConfigurator;
+    const newObjectType = decisionConfigurator.getTileObjectType();
+    const newObjectTypeCode = AIPlayer.getTileObjectTypeCode(newObjectType);
+    environmentState.push(newObjectTypeCode);
+
+    const options = decisionConfigurator.getOptions();
+    const optionsCount = options.length;
+
+    for (let i = 0; i < optionsCount; ++i) {
+      const option = options[i];
+      environmentState.push(option.x);
+      environmentState.push(option.y);
+    }
+
+    const world = this.world;
     const objectTypes = world.getObjectTypesGrid();
+    const rows = world.getRows();
+    const cols = world.getCols();
+
+    for (let row = 0; row < rows; ++row) {
+      const rowArray = objectTypes[row];
+
+      for (let col = 0; col < cols; ++col) {
+        const tileObjectType = rowArray[col];
+        const tileObjectTypeCode = AIPlayer.getTileObjectTypeCode(tileObjectType);
+        environmentState.push(tileObjectTypeCode);
+      }
+    }
 
     return environmentState;
   }
 
+  private static getTileObjectTypeCode(type: TileObjectType): number {
+    return AIPlayer.OBJECT_TYPES.indexOf(type) + 1;
+  }
+
   private parseAction(action: number): AbstractAction {
-    return new PlaceAction(1, 1, TileObjectType.Factory);
+    return new DecideAction(action);
+  }
+
+  private getStatesCount(): number {
+    const objectType = 1;
+    const options = this.decisionConfigurator.getOptionsMaxCount();
+    const world = this.world;
+    const tiles = world.getRows() * world.getCols();
+    return objectType + options * 2 + tiles;
+  }
+
+  private getActionsCount(): number {
+    return this.decisionConfigurator.getOptionsMaxCount();
   }
 }

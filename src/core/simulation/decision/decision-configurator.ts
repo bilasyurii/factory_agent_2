@@ -1,3 +1,4 @@
+import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 import { Tile } from "../../environment/tile/tile";
 import { World } from "../../environment/world/world";
 import { Bounds } from "../../utils/math/bounds";
@@ -11,6 +12,7 @@ export type DecisionOption = IVector;
 export class DecisionConfigurator {
   private world: World;
   private random: Random2;
+  private tileObjectType: TileObjectType = TileObjectType.Factory;
   private prevBounds: Bounds = new Bounds();
   private nextBounds: Bounds = new Bounds();
   private options: DecisionOption[] = [];
@@ -21,6 +23,14 @@ export class DecisionConfigurator {
     this.world = config.world;
     this.random = config.random;
     this.maxCount = config.maxCount;
+  }
+
+  public getOptionsMaxCount(): number {
+    return this.maxCount;
+  }
+
+  public getTileObjectType(): TileObjectType {
+    return this.tileObjectType;
   }
 
   public getOptions(): DecisionOption[] {

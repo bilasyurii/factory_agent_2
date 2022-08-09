@@ -1,15 +1,15 @@
 import { World } from "../../environment/world/world";
 import { AbstractAction } from "../action/action.abstract";
-import { DecisionOption } from "../decision/decision-configurator";
+import { DecisionConfigurator } from "../decision/decision-configurator";
 import { IPlayerConfig } from "./player-config.interface";
 
 export abstract class AbstractPlayer {
   protected world: World;
-  protected options: DecisionOption[];
+  protected decisionConfigurator: DecisionConfigurator;
 
   public prepare(config: IPlayerConfig): void {
     this.world = config.world;
-    this.options = config.decisionOptions;
+    this.decisionConfigurator = config.decisionConfigurator;
     this.onPrepared();
   }
 

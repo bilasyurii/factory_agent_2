@@ -19,10 +19,14 @@ export class Simulation {
   }
 
   public prepare(): void {
-    this.player.prepare(this.world);
+    this.player.prepare({
+      world: this.world,
+      decisionConfigurator: this.decisionConfigurator,
+    });
   }
 
   public step(): void {
+    this.decisionConfigurator.configure();
     this.player.act();
   }
 

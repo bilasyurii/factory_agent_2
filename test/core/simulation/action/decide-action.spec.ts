@@ -3,9 +3,9 @@ import * as sinon from "sinon";
 import { TileObjectType } from "../../../../src/core/environment/tile/object/tile-object-type.enum";
 import { World } from "../../../../src/core/environment/world/world";
 import { IActionContext } from "../../../../src/core/simulation/action/action-context.interface";
-import { PlaceAction } from "../../../../src/core/simulation/action/place-action";
+import { DecideAction } from "../../../../src/core/simulation/action/decide-action";
 
-describe("PlaceAction", function () {
+describe("DecideAction", function () {
   it("should set tile's stored object", function () {
     const world = new World({
       grid: {
@@ -17,11 +17,16 @@ describe("PlaceAction", function () {
 
     const x = 2;
     const y = 1;
-    const objectType = TileObjectType.Factory;
-    const action = new PlaceAction(x, y, objectType);
+    const tileObjectType = TileObjectType.Factory;
+    const action = new DecideAction(0);
 
     const actionContext: IActionContext = {
       world,
+      tileObjectType,
+      decisionOptions: [{
+        x,
+        y,
+      }],
     };
     action.setup(actionContext);
 
@@ -29,6 +34,6 @@ describe("PlaceAction", function () {
 
     expect(worldSpy.setTileObject.calledOnce).to.be.true;
     expect(worldSpy.setTileObject.calledWith(x, y)).to.be.true;
-    expect(worldSpy.setTileObject.getCall(0).args[2].getType()).to.be.equal(objectType);
+    expect(worldSpy.setTileObject.getCall(0).args[2].getType()).to.be.equal(tileObjectType);
   });
 });
