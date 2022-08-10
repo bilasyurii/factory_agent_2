@@ -1,11 +1,28 @@
 import { Bounds } from "../../utils/math/bounds";
 import { Math2 } from "../../utils/math/math2";
+import { IVector } from "../../utils/math/vector.interface";
 import { TileObject } from "../tile/object/tile-object";
 import { TileObjectType } from "../tile/object/tile-object-type.enum";
 import { Tile } from "../tile/tile";
 import { IWorldConfig } from "./world-config.interface";
 
 export class World {
+  private static readonly TOUCHING_OFFSETS: IVector[] = [
+    { x: +0, y: -1 },
+    { x: -1, y: +0 },
+    { x: +1, y: +0 },
+    { x: +0, y: +1 },
+  ];
+  private static readonly NEAR_OFFSETS: IVector[] = [
+    { x: -1, y: -1 },
+    { x: +0, y: -1 },
+    { x: +1, y: -1 },
+    { x: -1, y: +0 },
+    { x: +1, y: +0 },
+    { x: -1, y: +1 },
+    { x: +0, y: +1 },
+    { x: +1, y: +1 },
+  ];
   private grid: Tile[][];
   private rows: number;
   private cols: number;
@@ -96,6 +113,33 @@ export class World {
     return types;
   }
 
+  public getObjectsOfType(type: TileObjectType): TileObject[] {
+    const objects: TileObject[] = [];
+    const rows = this.rows;
+    const cols = this.cols;
+
+    for (let row = 0; row < rows; ++row) {
+      for (let col = 0; col < cols; ++col) {
+        const tile = this.getTile(col, row);
+        const object = tile.getObject();
+
+        if (object && object.getType() === type) {
+          objects.push(object);
+        }
+      }
+    }
+
+    return objects;
+  }
+
+  public getTouchingTiles(source: Tile): Tile[] {
+    return this.getTilesUsingOffsets(source, World.TOUCHING_OFFSETS);
+  }
+
+  public getNearTiles(source: Tile): Tile[] {
+    return this.getTilesUsingOffsets(source, World.NEAR_OFFSETS);
+  }
+
   private initGrid(): void {
     const grid: Tile[][] = [];
     this.grid = grid;
@@ -116,5 +160,23 @@ export class World {
   private getTile(x: number, y: number): Tile {
     const row = this.grid[y];
     return row ? row[x] || null : null;
+  }
+
+  private getTilesUsingOffsets(source: Tile, offsets: IVector[]): Tile[] {
+    const tiles: Tile[] = [];
+    const tileX = source.getX();
+    const tileY = source.getY();
+    const offsetsCount = offsets.length;
+
+    for (let i = 0; i < offsetsCount; ++i) {
+      const offset = offsets[i];
+      const tile = this.getTile(tileX + offset.x, tileY + offset.y);
+
+      if (tile) {
+        tiles.push(tile);
+      }
+    }
+
+    return tiles;
   }
 }

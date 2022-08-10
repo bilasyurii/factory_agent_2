@@ -21,7 +21,7 @@ describe("Tile", function () {
     const tile2 = new Tile(1, 1);
 
     const object1 = new TileObject(TileObjectType.Factory);
-    const object2 = new TileObject(TileObjectType.PowerPlant);
+    const object2 = new TileObject(TileObjectType.IronMine);
 
     tile1.setObject(object1);
 
