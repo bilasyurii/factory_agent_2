@@ -1,5 +1,6 @@
 import { GameConfig } from "../../config/game-config";
 import { World } from "../environment/world/world";
+import { Math2 } from "../utils/math/math2";
 import { Random2 } from "../utils/math/random2";
 import { DecisionConfigurator } from "./decision/decision-configurator";
 import { AIPlayer } from "./player/ai-player";
@@ -43,13 +44,12 @@ export class Simulation {
     const decisionConfigurator = this.decisionConfigurator;
     decisionConfigurator.configure();
 
-    const world = this.world;
     const player = this.player;
     const action = player.act();
     action.setup({
       tileObjectType: decisionConfigurator.getTileObjectType(),
       decisionOptions: decisionConfigurator.getOptions(),
-      world: world,
+      world: this.world,
     });
     action.execute();
 
@@ -57,7 +57,7 @@ export class Simulation {
     player.learn(score);
     console.log(score);
 
-    if (world.getEmptyTilesCount() < decisionConfigurator.getOptionsMaxCount()) {
+    if (this.checkIfEnded()) {
       this.ended = true;
     }
   }
@@ -96,5 +96,14 @@ export class Simulation {
       world: this.world,
       decisionConfigurator: this.decisionConfigurator,
     });
+  }
+
+  private checkIfEnded(): boolean {
+    const world = this.world;
+    const tilesCount = world.getTilesCount();
+    const emptyCount = world.getEmptyTilesCount();
+    const filledCount = tilesCount - emptyCount;
+    const targetCount = Math2.max(0, ~~(tilesCount / 3) - 1);
+    return filledCount >= targetCount;
   }
 }
