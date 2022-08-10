@@ -4,11 +4,13 @@ import { Random2 } from "../utils/math/random2";
 import { DecisionConfigurator } from "./decision/decision-configurator";
 import { AIPlayer } from "./player/ai-player";
 import { AbstractPlayer } from "./player/player.abstract";
+import { RulesManager } from "./rules/rules-manager";
 
 export class Simulation {
   private random: Random2;
   private world: World;
   private decisionConfigurator: DecisionConfigurator;
+  private rules: RulesManager;
   private player: AbstractPlayer;
   private ended: boolean;
   private ready: boolean;
@@ -17,6 +19,7 @@ export class Simulation {
     this.initRandom();
     this.initWorld();
     this.initDecisionConfigurator();
+    this.initRules();
     this.initPlayer();
     this.ended = false;
     this.ready = true;
@@ -41,13 +44,18 @@ export class Simulation {
     decisionConfigurator.configure();
 
     const world = this.world;
-    const action = this.player.act();
+    const player = this.player;
+    const action = player.act();
     action.setup({
       tileObjectType: decisionConfigurator.getTileObjectType(),
       decisionOptions: decisionConfigurator.getOptions(),
       world: world,
     });
     action.execute();
+
+    const score = this.rules.evaluate();
+    player.learn(score);
+    console.log(score);
 
     if (world.getEmptyTilesCount() < decisionConfigurator.getOptionsMaxCount()) {
       this.ended = true;
@@ -73,6 +81,13 @@ export class Simulation {
       random: this.random,
       maxCount: GameConfig.Decision.MaxCount,
     });
+  }
+
+  private initRules(): void {
+    this.rules = new RulesManager({
+      world: this.world,
+    });
+    this.rules.setupDefaultRules();
   }
 
   private initPlayer(): void {
