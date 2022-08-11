@@ -24,8 +24,9 @@ export abstract class AbstractRule {
 
     for (let i = 0; i < length; ++i) {
       const tile = tiles[i];
+      const object = tile.getObject();
 
-      if (tile.getObject().getType() === type) {
+      if (object && object.getType() === type) {
         return true;
       }
     }
@@ -39,8 +40,9 @@ export abstract class AbstractRule {
 
     for (let i = 0; i < length; ++i) {
       const tile = tiles[i];
+      const object = tile.getObject();
 
-      if (tile.getObject().getType() === type) {
+      if (object && object.getType() === type) {
         ++count;
       }
     }

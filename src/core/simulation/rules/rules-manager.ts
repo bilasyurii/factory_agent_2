@@ -1,4 +1,5 @@
 import FactoryRules from "./factory-rules";
+import IronMineRules from "./iron-mine-rules";
 import { IRuleContext } from "./rule-context.interface";
 import { AbstractRule } from "./rule.abstract";
 
@@ -31,5 +32,6 @@ export class RulesManager {
 
   public setupDefaultRules(): void {
     this.registerRule(new FactoryRules());
+    this.registerRule(new IronMineRules());
   }
 }

@@ -140,6 +140,11 @@ export class World {
     return this.getTilesUsingOffsets(source, World.NEAR_OFFSETS);
   }
 
+  public getTile(x: number, y: number): Tile {
+    const row = this.grid[y];
+    return row ? row[x] || null : null;
+  }
+
   private initGrid(): void {
     const grid: Tile[][] = [];
     this.grid = grid;
@@ -155,11 +160,6 @@ export class World {
         rowArray.push(new Tile(col, row));
       }
     }
-  }
-
-  private getTile(x: number, y: number): Tile {
-    const row = this.grid[y];
-    return row ? row[x] || null : null;
   }
 
   private getTilesUsingOffsets(source: Tile, offsets: IVector[]): Tile[] {
