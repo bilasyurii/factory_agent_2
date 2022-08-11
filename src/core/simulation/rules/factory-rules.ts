@@ -2,7 +2,9 @@ import { TileObject } from "../../environment/tile/object/tile-object";
 import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 import { AbstractRule } from "./rule.abstract";
 
-export default class FactoryRules extends AbstractRule {
+export class FactoryRules extends AbstractRule {
+  public static readonly pointsPerIronMine = 2;
+
   public evaluate(): number {
     let score = 0;
 
@@ -25,7 +27,7 @@ export default class FactoryRules extends AbstractRule {
 
     const near = world.getNearTiles(tile);
     const ironMinesCount = AbstractRule.countTilesWithObjectType(near, TileObjectType.IronMine);
-    const pointsPerIronMine = 2;
+    const pointsPerIronMine = FactoryRules.pointsPerIronMine;
     // factories like having iron mines near
     return ironMinesCount * pointsPerIronMine;
   }

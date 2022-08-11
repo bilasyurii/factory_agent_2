@@ -1,5 +1,5 @@
-import FactoryRules from "./factory-rules";
-import IronMineRules from "./iron-mine-rules";
+import { FactoryRules } from "./factory-rules";
+import { IronMineRules } from "./iron-mine-rules";
 import { IRuleContext } from "./rule-context.interface";
 import { AbstractRule } from "./rule.abstract";
 
