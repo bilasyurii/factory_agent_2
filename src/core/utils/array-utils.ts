@@ -116,6 +116,7 @@ export class ArrayUtils {
     const remainderCount = amount - result.length;
     const remainder = ArrayUtils.pick2(array, remainderCount, random);
     ArrayUtils.copy(remainder, result);
+    ArrayUtils.shuffle(result);
     return result;
   }
 
