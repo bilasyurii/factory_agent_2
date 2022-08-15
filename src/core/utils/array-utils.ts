@@ -1,3 +1,5 @@
+import { Random2 } from "./math/random2";
+
 export class ArrayUtils {
   private constructor() { }
 
@@ -42,7 +44,7 @@ export class ArrayUtils {
     }
   }
 
-  public static cloneArray2d<T>(array: T[][]): T[][] {
+  public static clone2d<T>(array: T[][]): T[][] {
     const clone: T[][] = [];
     const height = array.length;
 
@@ -58,5 +60,72 @@ export class ArrayUtils {
     }
 
     return clone;
+  }
+
+  public static shuffle<T>(array: T[]): T[] {
+    const length = array.length;
+
+    for (let i = 0; i < length; ++i) {
+      const j = ~~(Math.random() * length);
+      const temp = array[j];
+      array[j] = array[i];
+      array[i] = temp;
+    }
+
+    return array;
+  }
+
+  public static shuffle2<T>(array: T[], random: Random2): T[] {
+    const length = array.length;
+
+    for (let i = 0; i < length; ++i) {
+      const j = random.int() % length;
+      const temp = array[j];
+      array[j] = array[i];
+      array[i] = temp;
+    }
+
+    return array;
+  }
+
+  public static repeat<T>(pattern: T[], amount: number): T[] {
+    const result: T[] = [];
+    const patternLength = pattern.length;
+
+    for (let i = 0; i < amount; ++i) {
+      for (let j = 0; j < patternLength; ++j) {
+        result.push(pattern[j]);
+      }
+    }
+
+    return result;
+  }
+
+  public static pick<T>(array: T[], amount: number): T[] {
+    return ArrayUtils.shuffle(array.slice()).slice(amount);
+  }
+
+  public static pick2<T>(array: T[], amount: number, random: Random2): T[] {
+    return ArrayUtils.shuffle2(array.slice(), random).slice(amount);
+  }
+
+  public static multiPick2<T>(array: T[], amount: number, random: Random2): T[] {
+    const baseLength = array.length;
+    const fullTimesCount = ~~(amount / baseLength);
+    const result = ArrayUtils.repeat(array, fullTimesCount);
+    const remainderCount = amount - result.length;
+    const remainder = ArrayUtils.pick2(array, remainderCount, random);
+    ArrayUtils.copy(remainder, result);
+    return result;
+  }
+
+  public static copy<T>(from: T[], to: T[]): T[] {
+    const length = from.length;
+
+    for (let i = 0; i < length; ++i) {
+      to.push(from[i]);
+    }
+
+    return to;
   }
 }

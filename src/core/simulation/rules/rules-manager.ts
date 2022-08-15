@@ -5,10 +5,11 @@ import { AbstractRule } from "./rule.abstract";
 
 export class RulesManager {
   private context: IRuleContext;
-  private rules: AbstractRule[] = [];
+  private rules: AbstractRule[];
 
   constructor(context: IRuleContext) {
     this.context = context;
+    this.reset();
   }
 
   public registerRule(rule: AbstractRule): void {

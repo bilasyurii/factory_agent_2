@@ -6,16 +6,18 @@ import { Math2 } from "../../utils/math/math2";
 import { Random2 } from "../../utils/math/random2";
 import { IVector } from "../../utils/math/vector.interface";
 import { IDecisionConfiguratorConfig } from "./decision-configurator-config.interface";
+import { TypeDecisionGenerator } from "./type-decision-generator";
 
 export type DecisionOption = IVector;
 
 export class DecisionConfigurator {
   private world: World;
   private random: Random2;
-  private tileObjectType: TileObjectType = TileObjectType.Factory;
+  private typeDecisionGenerator: TypeDecisionGenerator;
+  private tileObjectType: TileObjectType;
   private prevBounds: Bounds = new Bounds();
   private nextBounds: Bounds = new Bounds();
-  private options: DecisionOption[] = [];
+  private options: DecisionOption[];
   private amountNeeded: number;
   private maxCount: number;
 
@@ -23,6 +25,8 @@ export class DecisionConfigurator {
     this.world = config.world;
     this.random = config.random;
     this.maxCount = config.maxCount;
+
+    this.initTypeDecisionGenerator();
   }
 
   public getOptionsMaxCount(): number {
@@ -38,6 +42,8 @@ export class DecisionConfigurator {
   }
 
   public configure(): void {
+    this.tileObjectType = this.typeDecisionGenerator.next();
+
     const options: DecisionOption[] = [];
     this.options = options;
 
@@ -56,6 +62,17 @@ export class DecisionConfigurator {
     this.amountNeeded = Math.min(this.maxCount, world.getEmptyTilesCount());
 
     this.scanBounds();
+  }
+
+  public reset(): void {
+    this.typeDecisionGenerator.reset();
+  }
+
+  private initTypeDecisionGenerator(): void {
+    this.typeDecisionGenerator = new TypeDecisionGenerator({
+      random: this.random,
+      decisionsCount: this.maxCount,
+    });
   }
 
   private scanBounds(): void {

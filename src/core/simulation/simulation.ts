@@ -32,6 +32,7 @@ export class Simulation {
 
   public reset(): void {
     this.world.reset();
+    this.decisionConfigurator.reset();
     this.ended = false;
     this.ready = true;
   }

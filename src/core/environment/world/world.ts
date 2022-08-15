@@ -30,6 +30,7 @@ export class World {
   constructor(config: IWorldConfig) {
     this.rows = config.grid.rows;
     this.cols = config.grid.cols;
+
     this.initGrid();
   }
 
