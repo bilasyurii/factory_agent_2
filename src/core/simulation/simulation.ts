@@ -81,6 +81,7 @@ export class Simulation {
       world: this.world,
       random: this.random,
       maxCount: GameConfig.Decision.MaxCount,
+      decisionRoundsCount: this.getDecisionRoundsCount(),
     });
   }
 
@@ -104,7 +105,11 @@ export class Simulation {
     const tilesCount = world.getTilesCount();
     const emptyCount = world.getEmptyTilesCount();
     const filledCount = tilesCount - emptyCount;
-    const targetCount = Math2.max(0, ~~(tilesCount / 3) - 1);
+    const targetCount = this.getDecisionRoundsCount();
     return filledCount >= targetCount;
+  }
+
+  private getDecisionRoundsCount(): number {
+    return ~~(this.world.getTilesCount() / 3) - 1;
   }
 }

@@ -26,7 +26,7 @@ export class DecisionConfigurator {
     this.random = config.random;
     this.maxCount = config.maxCount;
 
-    this.initTypeDecisionGenerator();
+    this.initTypeDecisionGenerator(config.decisionRoundsCount);
   }
 
   public getOptionsMaxCount(): number {
@@ -68,10 +68,10 @@ export class DecisionConfigurator {
     this.typeDecisionGenerator.reset();
   }
 
-  private initTypeDecisionGenerator(): void {
+  private initTypeDecisionGenerator(decisionRoundsCount: number): void {
     this.typeDecisionGenerator = new TypeDecisionGenerator({
       random: this.random,
-      decisionsCount: this.maxCount,
+      decisionRoundsCount,
     });
   }
 

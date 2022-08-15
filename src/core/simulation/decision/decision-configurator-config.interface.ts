@@ -5,4 +5,5 @@ export interface IDecisionConfiguratorConfig {
   world: World;
   random: Random2;
   maxCount: number;
+  decisionRoundsCount: number;
 }

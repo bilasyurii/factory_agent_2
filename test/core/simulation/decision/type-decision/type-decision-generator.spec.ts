@@ -7,15 +7,15 @@ import { ObjectUtils } from "../../../../../src/core/utils/object-utils";
 describe("TypeDecisionGenerator", function () {
   it("should produce each kind of type", function () {
     const random = new Random2();
-    const decisionsCount = 5;
+    const decisionRoundsCount = 5;
     const typeDecisionGenerator = new TypeDecisionGenerator({
       random,
-      decisionsCount,
+      decisionRoundsCount,
     });
 
     let occurrences: Record<TileObjectType, number> = <any>{};
 
-    for (let i = 0; i < decisionsCount; ++i) {
+    for (let i = 0; i < decisionRoundsCount; ++i) {
       const type = typeDecisionGenerator.next();
 
       if (occurrences[type]) {

@@ -12,7 +12,7 @@ export class TypeDecisionGenerator {
   private random: Random2;
 
   constructor(config: ITypeDecisionGeneratorConfig) {
-    this.decisionsCount = config.decisionsCount;
+    this.decisionsCount = config.decisionRoundsCount;
     this.random = config.random;
 
     this.reset();
