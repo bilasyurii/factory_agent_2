@@ -6,7 +6,7 @@ import { Math2 } from "../../utils/math/math2";
 import { Random2 } from "../../utils/math/random2";
 import { IVector } from "../../utils/math/vector.interface";
 import { IDecisionConfiguratorConfig } from "./decision-configurator-config.interface";
-import { TypeDecisionGenerator } from "./type-decision-generator";
+import { TypeDecisionGenerator } from "./type-decision/type-decision-generator";
 
 export type DecisionOption = IVector;
 

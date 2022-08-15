@@ -1,7 +1,7 @@
-import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
-import { ArrayUtils } from "../../utils/array-utils";
-import { Random2 } from "../../utils/math/random2";
-import { ObjectUtils } from "../../utils/object-utils";
+import { TileObjectType } from "../../../environment/tile/object/tile-object-type.enum";
+import { ArrayUtils } from "../../../utils/array-utils";
+import { Random2 } from "../../../utils/math/random2";
+import { ObjectUtils } from "../../../utils/object-utils";
 import { ITypeDecisionGeneratorConfig } from "./type-decision-generator-config.interface";
 
 export class TypeDecisionGenerator {

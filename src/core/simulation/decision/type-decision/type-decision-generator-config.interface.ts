@@ -1,4 +1,4 @@
-import { Random2 } from "../../utils/math/random2";
+import { Random2 } from "../../../utils/math/random2";
 
 export interface ITypeDecisionGeneratorConfig {
   decisionsCount: number;
