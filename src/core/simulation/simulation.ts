@@ -15,6 +15,7 @@ export class Simulation {
   private player: AbstractPlayer;
   private ended: boolean;
   private ready: boolean;
+  private score: number;
 
   constructor() {
     this.initRandom();
@@ -22,8 +23,7 @@ export class Simulation {
     this.initDecisionConfigurator();
     this.initRules();
     this.initPlayer();
-    this.ended = false;
-    this.ready = true;
+    this.resetData();
   }
 
   public isEnded(): boolean {
@@ -33,8 +33,7 @@ export class Simulation {
   public reset(): void {
     this.world.reset();
     this.decisionConfigurator.reset();
-    this.ended = false;
-    this.ready = true;
+    this.resetData();
   }
 
   public step(): void {
@@ -55,8 +54,10 @@ export class Simulation {
     action.execute();
 
     const score = this.rules.evaluate();
-    player.learn(score);
-    console.log(score);
+    const scoreDiff = score - this.score;
+    const reward = Math2.normalizeLogarithmicSigned(scoreDiff, 2, 2);
+    this.score = score;
+    player.learn(reward);
 
     if (this.checkIfEnded()) {
       this.ended = true;
@@ -111,5 +112,11 @@ export class Simulation {
 
   private getDecisionRoundsCount(): number {
     return ~~(this.world.getTilesCount() / 3) - 1;
+  }
+
+  private resetData(): void {
+    this.score = 0;
+    this.ended = false;
+    this.ready = true;
   }
 }
