@@ -1,6 +1,7 @@
 declare global {
   type Scene = Phaser.Scene;
   type Container = Phaser.GameObjects.Container;
+  type Graphics = Phaser.GameObjects.Graphics;
   type Sprite = Phaser.GameObjects.Sprite;
   type PhaserText = Phaser.GameObjects.Text;
   type TimerEvent = Phaser.Time.TimerEvent;

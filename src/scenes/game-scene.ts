@@ -82,6 +82,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private onSimulationEnded(): void {
+    this.ui.onSimulationEnded(this.simulation.getScore());
     this.reset();
     this.play();
   }
