@@ -1,31 +1,42 @@
 import { GameConfig } from "../../config/game-config";
 import { SimpleChart } from "./chart/simple-chart";
-import { ScoreDisplay } from "./score-display";
+import { IterationLabel } from "./labels/iteration-label";
+import { ScoreLabel } from "./labels/score-label";
 
 export class UI extends Phaser.GameObjects.Container {
-  private scoreDisplay: ScoreDisplay;
+  private scoreLabel: ScoreLabel;
+  private iterationLabel: ScoreLabel;
   private chart: SimpleChart;
 
   constructor(scene: Scene) {
     super(scene);
 
-    this.initScoreDisplay();
+    this.initScoreLabel();
+    this.initIterationLabel();
     this.initChart();
   }
 
   public setScore(score: number): void {
-    this.scoreDisplay.setScore(score);
+    this.scoreLabel.setValue(score);
   }
 
   public onSimulationEnded(totalScore: number): void {
+    this.iterationLabel.increment();
     this.chart.addRecord(totalScore);
   }
 
-  private initScoreDisplay(): void {
-    const scoreDisplay = new ScoreDisplay(this.scene);
-    this.scoreDisplay = scoreDisplay;
-    this.add(scoreDisplay);
-    scoreDisplay.setPosition(GameConfig.Width - 200, 25);
+  private initScoreLabel(): void {
+    const scoreLabel = new ScoreLabel(this.scene);
+    this.scoreLabel = scoreLabel;
+    this.add(scoreLabel);
+    scoreLabel.setPosition(GameConfig.Width - 200, 25);
+  }
+
+  private initIterationLabel(): void {
+    const iterationLabel = new IterationLabel(this.scene);
+    this.iterationLabel = iterationLabel;
+    this.add(iterationLabel);
+    iterationLabel.setPosition(GameConfig.Width - 200, 50);
   }
 
   private initChart(): void {
