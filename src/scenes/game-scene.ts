@@ -67,6 +67,7 @@ export class GameScene extends Phaser.Scene {
     });
     this.simulationView = simulationView;
     this.add.existing(simulationView);
+    simulationView.setScale(GameConfig.View.Scale);
   }
 
   private initUI(): void {
