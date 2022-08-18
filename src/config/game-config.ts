@@ -9,4 +9,7 @@ export const GameConfig = {
     Rows: 5,
     Cols: 5,
   },
+  View: {
+    TileSize: 50,
+  },
 };

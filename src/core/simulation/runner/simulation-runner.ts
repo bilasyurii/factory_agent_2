@@ -3,6 +3,7 @@ import { Simulation } from "../simulation";
 import { ISimulationRunnerConfig } from "./simulation-runner-config.interface";
 
 enum Events {
+  Updated = 'Updated',
   Ended = 'Ended',
 }
 
@@ -37,6 +38,8 @@ export class SimulationRunner {
     }
 
     this.simulation.step();
+
+    this.events.emit(Events.Updated);
   }
 
   private onEnded(): void {

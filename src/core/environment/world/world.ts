@@ -114,6 +114,26 @@ export class World {
     return types;
   }
 
+  public getObjectsGrid(): TileObject[][] {
+    const types: TileObject[][] = [];
+    const rows = this.rows;
+    const cols = this.cols;
+
+    for (let row = 0; row < rows; ++row) {
+      const typesRow: TileObject[] = [];
+
+      types.push(typesRow);
+
+      for (let col = 0; col < cols; ++col) {
+        const tile = this.getTile(col, row);
+        const object = tile.getObject();
+        typesRow.push(object || null);
+      }
+    }
+
+    return types;
+  }
+
   public getObjectsOfType(type: TileObjectType): TileObject[] {
     const objects: TileObject[] = [];
     const rows = this.rows;

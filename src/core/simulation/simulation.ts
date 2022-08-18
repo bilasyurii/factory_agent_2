@@ -26,6 +26,10 @@ export class Simulation {
     this.resetData();
   }
 
+  public getWorld(): World {
+    return this.world;
+  }
+
   public isEnded(): boolean {
     return this.ended;
   }

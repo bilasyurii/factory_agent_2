@@ -6,34 +6,29 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    // const load = this.load;
+    const load = this.load;
 
-    // this.loadFolder('assets/images/tiles/', [
-    //   'grass',
-    // ]);
+    this.loadFolder('assets/images/tiles/', [
+      'platform',
+    ]);
 
-    // this.loadFolder('assets/images/buildings/', [
-    //   'water_pump',
-    // ]);
+    this.loadFolder('assets/images/buildings/', [
+      'assembly_orange',
+      'mine_iron',
+    ]);
 
-    // this.loadFolder('assets/images/conveyor/', [
-    //   'conveyor_down',
-    // ]);
-
-    // load.on(Phaser.Loader.Events.COMPLETE, this.onAssetsLoaded, this);
-
-    this.onAssetsLoaded();
+    load.on(Phaser.Loader.Events.COMPLETE, this.onAssetsLoaded, this);
   }
 
-  // private loadFolder(folderPath: string, keys: string[]) {
-  //   const load = this.load;
+  private loadFolder(folderPath: string, keys: string[]) {
+    const load = this.load;
 
-  //   load.setPath(folderPath);
+    load.setPath(folderPath);
 
-  //   keys.forEach((key) => {
-  //     load.image(key, key + '.png');
-  //   });
-  // }
+    keys.forEach((key) => {
+      load.image(key, key + '.png');
+    });
+  }
 
   private onAssetsLoaded(): void {
     this.scene.start('game');
