@@ -2,15 +2,17 @@ import { GameConfig } from "../config/game-config";
 import { Simulation } from "../core/simulation/simulation";
 import { SimulationRunner } from "../core/simulation/runner/simulation-runner";
 import { SimulationView } from "../view/simulation/simulation-view";
+import { UI } from "../view/ui/ui";
 
 export class GameScene extends Phaser.Scene {
   private simulation: Simulation;
   private simulationRunner: SimulationRunner;
   private simulationView: SimulationView;
+  private ui: UI;
 
   constructor() {
     super({
-      key: 'game',
+      key: "game",
     });
   }
 
@@ -18,6 +20,7 @@ export class GameScene extends Phaser.Scene {
     this.initSimulation();
     this.initSimulationRunner();
     this.initSimulationView();
+    this.initUI();
     this.listenEvents();
     this.initTimer();
     this.reset();
@@ -66,6 +69,12 @@ export class GameScene extends Phaser.Scene {
     this.add.existing(simulationView);
   }
 
+  private initUI(): void {
+    const ui = new UI(this);
+    this.ui = ui;
+    this.add.existing(ui);
+  }
+
   private listenEvents(): void {
     const simulationRunnerEvents = this.simulationRunner.events;
     simulationRunnerEvents.addListener(SimulationRunner.Events.Ended, this.onSimulationEnded, this);
@@ -79,5 +88,6 @@ export class GameScene extends Phaser.Scene {
 
   private onSimulationUpdated(): void {
     this.simulationView.updateView();
+    this.ui.setScore(this.simulation.getScore());
   }
 }

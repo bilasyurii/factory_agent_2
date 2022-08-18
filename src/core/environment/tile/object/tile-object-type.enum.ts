@@ -1,4 +1,4 @@
 export enum TileObjectType {
-  Factory = 'Factory',
-  IronMine = 'IronMine',
+  Factory = "Factory",
+  IronMine = "IronMine",
 }

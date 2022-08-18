@@ -1,8 +1,8 @@
-import { GameConfig } from './game-config';
+import { GameConfig } from "./game-config";
 
 export const PhaserConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  backgroundColor: 'red',
+  backgroundColor: "red",
   width: GameConfig.Width,
   height: GameConfig.Height,
 };

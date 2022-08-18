@@ -30,6 +30,10 @@ export class Simulation {
     return this.world;
   }
 
+  public getScore(): number {
+    return this.score;
+  }
+
   public isEnded(): boolean {
     return this.ended;
   }

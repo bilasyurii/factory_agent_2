@@ -3,8 +3,8 @@ import { Simulation } from "../simulation";
 import { ISimulationRunnerConfig } from "./simulation-runner-config.interface";
 
 enum Events {
-  Updated = 'Updated',
-  Ended = 'Ended',
+  Updated = "Updated",
+  Ended = "Ended",
 }
 
 export class SimulationRunner {

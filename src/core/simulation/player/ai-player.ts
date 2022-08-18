@@ -1,9 +1,9 @@
-import RL from './rl/rl';
-import { AbstractPlayer } from './player.abstract';
-import { AbstractAction } from '../action/action.abstract';
-import { DecideAction } from '../action/decide-action';
-import { ObjectUtils } from '../../utils/object-utils';
-import { TileObjectType } from '../../environment/tile/object/tile-object-type.enum';
+import RL from "./rl/rl";
+import { AbstractPlayer } from "./player.abstract";
+import { AbstractAction } from "../action/action.abstract";
+import { DecideAction } from "../action/decide-action";
+import { ObjectUtils } from "../../utils/object-utils";
+import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 
 export class AIPlayer extends AbstractPlayer {
   private static readonly OBJECT_TYPES = ObjectUtils.enumToArray<TileObjectType>(TileObjectType);

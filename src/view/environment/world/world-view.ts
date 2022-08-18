@@ -57,7 +57,7 @@ export class WorldView extends Phaser.GameObjects.Container {
 
   private initTiles(): void {
     const scene = this.scene;
-    const texture = 'platform';
+    const texture = "platform";
     const layer = this.tilesLayer;
     const world = this.world;
     const rows = world.getRows();
@@ -100,9 +100,9 @@ export class WorldView extends Phaser.GameObjects.Container {
 
     switch (type) {
       case TileObjectType.Factory:
-        return 'assembly_orange';
+        return "assembly_orange";
       case TileObjectType.IronMine:
-        return 'mine_iron';
+        return "mine_iron";
       default:
         return null;
     }
