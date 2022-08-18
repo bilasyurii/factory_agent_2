@@ -1,3 +1,4 @@
+import { GameConfig } from "../../../config/game-config";
 import { ISimulationEvent } from "../../utils/events/simulation-event.interface";
 import { Simulation } from "../simulation";
 import { ISimulationRunnerConfig } from "./simulation-runner-config.interface";
@@ -32,12 +33,21 @@ export class SimulationRunner {
       return;
     }
 
-    if (this.simulation.isEnded()) {
-      this.onEnded();
-      return;
-    }
+    const steps = GameConfig.Runner.StepsPerTick;
+    const simulation = this.simulation;
 
-    this.simulation.step();
+    for (let i = 0; i < steps; ++i) {
+      if (!this.running) {
+        break;
+      }
+
+      if (simulation.isEnded()) {
+        this.onEnded();
+        break;
+      }
+  
+      simulation.step();
+    }
 
     this.events.emit(Events.Updated);
   }

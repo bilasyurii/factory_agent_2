@@ -2,6 +2,9 @@ export const GameConfig = {
   Width: 900,
   Height: 600,
   StepInterval: 100,
+  Runner: {
+    StepsPerTick: 20,
+  },
   Decision: {
     MaxCount: 4,
   },
