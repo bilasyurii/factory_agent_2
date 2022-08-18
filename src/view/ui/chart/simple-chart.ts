@@ -12,7 +12,7 @@ export class SimpleChart extends Phaser.GameObjects.Container {
     super(scene);
 
     this.config = config;
-    this.records = [ 0 ];
+    this.records = [];
     this.maxValue = 0;
     this.tickMarks = [];
 
@@ -86,8 +86,16 @@ export class SimpleChart extends Phaser.GameObjects.Container {
     const height = this.getHeight();
     const stepY = height / this.maxValue;
 
-    graphics.moveTo(0, height);
-    records.forEach((record, i) => graphics.lineTo(i * stepX, height - record * stepY));
+    records.forEach((record, i) => {
+      const x = i * stepX;
+      const y = height - record * stepY;
+
+      if (i === 0) {
+        graphics.moveTo(x, y);
+      } else {
+        graphics.lineTo(x, y);
+      }
+    });
     graphics.stroke();
   }
 
