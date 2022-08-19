@@ -9,8 +9,8 @@ export const GameConfig = {
     MaxCount: 4,
   },
   World: {
-    Rows: 10,
-    Cols: 10,
+    Rows: 7,
+    Cols: 7,
   },
   View: {
     TileSize: 50,

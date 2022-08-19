@@ -93,8 +93,4 @@ export class AIPlayer extends AbstractPlayer {
     const tiles = world.getRows() * world.getCols();
     return objectType + options * 2 + tiles;
   }
-
-  private getActionsCount(): number {
-    return this.decisionConfigurator.getOptionsMaxCount();
-  }
 }

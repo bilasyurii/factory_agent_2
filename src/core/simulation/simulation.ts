@@ -5,6 +5,7 @@ import { Random2 } from "../utils/math/random2";
 import { DecisionConfigurator } from "./decision/decision-configurator";
 import { AIPlayer } from "./player/ai-player";
 import { AbstractPlayer } from "./player/player.abstract";
+// import { RandomPlayer } from "./player/random-player";
 import { RulesManager } from "./rules/rules-manager";
 
 export class Simulation {
@@ -102,11 +103,9 @@ export class Simulation {
   }
 
   private initPlayer(): void {
-    this.player = new AIPlayer();
-    this.player.setup({
-      world: this.world,
-      decisionConfigurator: this.decisionConfigurator,
-    });
+    const player = new AIPlayer();
+    this.player = player;
+    this.setupPlayer(player);
   }
 
   private checkIfEnded(): boolean {
@@ -126,5 +125,13 @@ export class Simulation {
     this.score = 0;
     this.ended = false;
     this.ready = true;
+  }
+
+  private setupPlayer(player: AbstractPlayer): void {
+    player.setup({
+      world: this.world,
+      decisionConfigurator: this.decisionConfigurator,
+      random: this.random,
+    });
   }
 }

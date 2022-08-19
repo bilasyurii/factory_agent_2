@@ -7,6 +7,7 @@ export class UI extends Phaser.GameObjects.Container {
   private scoreLabel: ScoreLabel;
   private iterationLabel: ScoreLabel;
   private chart: SimpleChart;
+  private averageChart: SimpleChart;
 
   constructor(scene: Scene) {
     super(scene);
@@ -14,6 +15,7 @@ export class UI extends Phaser.GameObjects.Container {
     this.initScoreLabel();
     this.initIterationLabel();
     this.initChart();
+    this.initAverageChart();
   }
 
   public setScore(score: number): void {
@@ -23,6 +25,7 @@ export class UI extends Phaser.GameObjects.Container {
   public onSimulationEnded(totalScore: number): void {
     this.iterationLabel.increment();
     this.chart.addRecord(totalScore);
+    this.averageChart.addRecord(this.getAverage());
   }
 
   private initScoreLabel(): void {
@@ -40,13 +43,30 @@ export class UI extends Phaser.GameObjects.Container {
   }
 
   private initChart(): void {
+    this.chart = this.createChart(0xffff00, 100, new Phaser.Math.Vector2(GameConfig.Width - 350, 75));
+  }
+
+  private initAverageChart(): void {
+    this.averageChart = this.createChart(0xff00ff, Infinity, new Phaser.Math.Vector2(GameConfig.Width - 350, 300));
+  }
+
+  private createChart(color: number, capacity: number, position: Vector2): SimpleChart {
     const chart = new SimpleChart(this.scene, {
       width: 300,
       height: 200,
       tickMarksCount: 4,
+      capacity: capacity,
+      lineColor: color,
     });
-    this.chart = chart;
     this.add(chart);
-    chart.setPosition(GameConfig.Width - chart.getWidth() - 50, 75);
+    chart.copyPosition(position);
+    return chart;
+  }
+
+  private getAverage(): number {
+    const data = this.chart.getData();
+    return data.reduce(function (prev, current) {
+      return prev + current;
+    }, 0) / (data.length || 1);
   }
 }

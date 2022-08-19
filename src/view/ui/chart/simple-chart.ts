@@ -21,6 +21,10 @@ export class SimpleChart extends Phaser.GameObjects.Container {
     this.initTickMarks();
   }
 
+  public getData(): number[] {
+    return this.records;
+  }
+
   public getWidth(): number {
     return this.config.width;
   }
@@ -30,7 +34,13 @@ export class SimpleChart extends Phaser.GameObjects.Container {
   }
 
   public addRecord(value: number): void {
-    this.records.push(Math2.max(0, value));
+    const records = this.records;
+    records.push(Math2.max(0, value));
+
+    if (records.length > this.config.capacity) {
+      records.shift();
+    }
+
     this.maxValue = Math2.max(this.maxValue, value);
     this.tickMarks.forEach((tickMark) => tickMark.setVisible(true));
     this.drawRecords();
@@ -78,7 +88,7 @@ export class SimpleChart extends Phaser.GameObjects.Container {
   private drawRecords(): void {
     const graphics = this.recordsGraphics;
     graphics.clear();
-    graphics.lineStyle(2, 0xffff00);
+    graphics.lineStyle(2, this.config.lineColor);
 
     const records = this.records;
     const count = records.length;
