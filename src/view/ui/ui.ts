@@ -32,14 +32,14 @@ export class UI extends Phaser.GameObjects.Container {
     const scoreLabel = new ScoreLabel(this.scene);
     this.scoreLabel = scoreLabel;
     this.add(scoreLabel);
-    scoreLabel.setPosition(GameConfig.Width - 200, 25);
+    scoreLabel.setPosition(GameConfig.Width - 350, 25);
   }
 
   private initIterationLabel(): void {
     const iterationLabel = new IterationLabel(this.scene);
     this.iterationLabel = iterationLabel;
     this.add(iterationLabel);
-    iterationLabel.setPosition(GameConfig.Width - 200, 50);
+    iterationLabel.setPosition(GameConfig.Width - 350, 50);
   }
 
   private initChart(): void {
