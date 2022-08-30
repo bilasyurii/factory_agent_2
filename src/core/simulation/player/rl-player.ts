@@ -5,7 +5,7 @@ import { DecideAction } from "../action/decide-action";
 import { ObjectUtils } from "../../utils/object-utils";
 import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 
-export class AIPlayer extends AbstractPlayer {
+export class RLPlayer extends AbstractPlayer {
   private static readonly OBJECT_TYPES = ObjectUtils.enumToArray<TileObjectType>(TileObjectType);
   private agent: RL.DQNAgent = null;
 
@@ -48,7 +48,7 @@ export class AIPlayer extends AbstractPlayer {
     const environmentState: RL.EnvironmentState = [];
     const decisionConfigurator = this.decisionConfigurator;
     const newObjectType = decisionConfigurator.getTileObjectType();
-    const newObjectTypeCode = AIPlayer.getTileObjectTypeCode(newObjectType);
+    const newObjectTypeCode = RLPlayer.getTileObjectTypeCode(newObjectType);
     environmentState.push(newObjectTypeCode);
 
     const world = this.world;
@@ -70,7 +70,7 @@ export class AIPlayer extends AbstractPlayer {
 
       for (let col = 0; col < cols; ++col) {
         const tileObjectType = rowArray[col];
-        const tileObjectTypeCode = AIPlayer.getTileObjectTypeCode(tileObjectType);
+        const tileObjectTypeCode = RLPlayer.getTileObjectTypeCode(tileObjectType);
         environmentState.push(tileObjectTypeCode);
       }
     }
@@ -79,7 +79,7 @@ export class AIPlayer extends AbstractPlayer {
   }
 
   private static getTileObjectTypeCode(type: TileObjectType): number {
-    return (AIPlayer.OBJECT_TYPES.indexOf(type) + 1) / AIPlayer.OBJECT_TYPES.length;
+    return (RLPlayer.OBJECT_TYPES.indexOf(type) + 1) / RLPlayer.OBJECT_TYPES.length;
   }
 
   private parseAction(action: number): AbstractAction {

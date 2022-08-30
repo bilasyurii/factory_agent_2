@@ -1,4 +1,4 @@
-import { AIPlayer } from "../core/simulation/player/ai-player";
+import { RLPlayer } from "../core/simulation/player/rl-player";
 import { PlayerType } from "../core/simulation/player/player-type.enum";
 import { AbstractPlayer } from "../core/simulation/player/player.abstract";
 import { RandomPlayer } from "../core/simulation/player/random-player";
@@ -34,6 +34,6 @@ function getPlayerClassByType(type: PlayerType): new () => AbstractPlayer {
     case PlayerType.Random:
       return RandomPlayer;
     case PlayerType.DQN_RL:
-      return AIPlayer;
+      return RLPlayer;
   }
 }
