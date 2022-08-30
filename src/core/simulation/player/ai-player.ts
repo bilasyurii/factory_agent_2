@@ -36,9 +36,9 @@ export class AIPlayer extends AbstractPlayer {
     this.agent = new RL.DQNAgent(environment, {
       gamma: 0.5,
       epsilon: 0.05,
-      alpha: 0.01,
+      alpha: 0.1,
       experience_add_every: 1,
-      experience_size: 20000,
+      experience_size: 5000,
       learning_steps_per_iteration: 20,
       num_hidden_units: 300,
     });
@@ -51,19 +51,19 @@ export class AIPlayer extends AbstractPlayer {
     const newObjectTypeCode = AIPlayer.getTileObjectTypeCode(newObjectType);
     environmentState.push(newObjectTypeCode);
 
+    const world = this.world;
+    const objectTypes = world.getObjectTypesGrid();
+    const rows = world.getRows();
+    const cols = world.getCols();
+
     const options = decisionConfigurator.getOptions();
     const optionsCount = options.length;
 
     for (let i = 0; i < optionsCount; ++i) {
       const option = options[i];
-      environmentState.push(option.x);
-      environmentState.push(option.y);
+      environmentState.push(option.x / (cols - 1));
+      environmentState.push(option.y / (rows - 1));
     }
-
-    const world = this.world;
-    const objectTypes = world.getObjectTypesGrid();
-    const rows = world.getRows();
-    const cols = world.getCols();
 
     for (let row = 0; row < rows; ++row) {
       const rowArray = objectTypes[row];
@@ -79,7 +79,7 @@ export class AIPlayer extends AbstractPlayer {
   }
 
   private static getTileObjectTypeCode(type: TileObjectType): number {
-    return AIPlayer.OBJECT_TYPES.indexOf(type) + 1;
+    return (AIPlayer.OBJECT_TYPES.indexOf(type) + 1) / AIPlayer.OBJECT_TYPES.length;
   }
 
   private parseAction(action: number): AbstractAction {

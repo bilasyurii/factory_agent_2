@@ -3,10 +3,9 @@ import { World } from "../environment/world/world";
 import { Math2 } from "../utils/math/math2";
 import { Random2 } from "../utils/math/random2";
 import { DecisionConfigurator } from "./decision/decision-configurator";
-import { AIPlayer } from "./player/ai-player";
 import { AbstractPlayer } from "./player/player.abstract";
-// import { RandomPlayer } from "./player/random-player";
 import { RulesManager } from "./rules/rules-manager";
+import { ISimulationConfig } from "./simulation-config.interface";
 
 export class Simulation {
   private random: Random2;
@@ -18,13 +17,17 @@ export class Simulation {
   private ready: boolean;
   private score: number;
 
-  constructor() {
+  constructor(config: ISimulationConfig) {
     this.initRandom();
     this.initWorld();
     this.initDecisionConfigurator();
     this.initRules();
-    this.initPlayer();
+    this.initPlayer(config.playerClass);
     this.resetData();
+  }
+
+  public setRandomSeed(seed: number): void {
+    this.random.setSeed(seed);
   }
 
   public getWorld(): World {
@@ -102,8 +105,8 @@ export class Simulation {
     this.rules.setupDefaultRules();
   }
 
-  private initPlayer(): void {
-    const player = new AIPlayer();
+  private initPlayer(PlayerClass: new () => AbstractPlayer): void {
+    const player = new PlayerClass();
     this.player = player;
     this.setupPlayer(player);
   }

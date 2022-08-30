@@ -50,7 +50,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   private initSimulation(): void {
-    this.simulation = new Simulation();
+    this.simulation = new Simulation({
+      playerClass: GameConfig.Simulation.playerClass,
+    });
   }
 
   private initSimulationRunner(): void {

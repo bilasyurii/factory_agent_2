@@ -9,6 +9,10 @@ export class Random2 {
     this.seed = seed;
   }
 
+  public setSeed(seed: number): void {
+    this.seed = seed;
+  }
+
   public getSeed(): number {
     return this.seed;
   }
