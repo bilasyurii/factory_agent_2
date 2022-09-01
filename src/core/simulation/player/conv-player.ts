@@ -1,27 +1,31 @@
-import RL from "./rl/rl";
+import {
+  deepqlearn,
+  LayerOptionsSugarType,
+  TrainerOptions,
+} from "convnetjs-ts";
 import { AbstractPlayer } from "./player.abstract";
 import { AbstractAction } from "../action/action.abstract";
 import { DecideAction } from "../action/decide-action";
 import { ObjectUtils } from "../../utils/object-utils";
 import { TileObjectType } from "../../environment/tile/object/tile-object-type.enum";
 
-export class RLPlayer extends AbstractPlayer {
+export class ConvPlayer extends AbstractPlayer {
   private static readonly OBJECT_TYPES =
     ObjectUtils.enumToArray<TileObjectType>(TileObjectType);
-  private agent: RL.DQNAgent = null;
+  private brain: deepqlearn.Brain = null;
 
   public act(): AbstractAction {
     const environmentState = this.readEnvironmentState();
-    const actionCode = this.agent.act(environmentState);
+    const actionCode = this.brain.forward(environmentState);
     return this.parseAction(actionCode);
   }
 
   public learn(reward: number): void {
-    this.agent.learn(reward);
+    this.brain.backward(reward);
   }
 
   public destroy(): void {
-    this.agent = null;
+    this.brain = null;
   }
 
   protected onSetup(): void {
@@ -29,27 +33,61 @@ export class RLPlayer extends AbstractPlayer {
   }
 
   private initAgent(): void {
-    const environment: RL.IEnvironment = {
-      getNumStates: () => this.getStatesCount(),
-      getMaxNumActions: () => this.getActionsCount(),
+    const num_inputs = this.getStatesCount();
+    const num_actions = this.getActionsCount();
+    const temporal_window = 1; // amount of temporal memory. 0 = agent lives in-the-moment
+    const network_size =
+      num_inputs * temporal_window + num_actions * temporal_window + num_inputs;
+
+    const layer_defs: LayerOptionsSugarType[] = [];
+    layer_defs.push({
+      type: "input",
+      out_sx: 1,
+      out_sy: 1,
+      out_depth: network_size,
+    });
+    layer_defs.push({
+      type: "fc",
+      num_neurons: 50,
+      activation: "relu",
+    });
+    layer_defs.push({
+      type: "fc",
+      num_neurons: 50,
+      activation: "relu",
+    });
+    layer_defs.push({
+      type: "regression",
+      num_neurons: num_actions,
+    } as any);
+
+    const tdtrainer_options: TrainerOptions = {
+      learning_rate: 0.001,
+      momentum: 0,
+      batch_size: 64,
+      l2_decay: 0.01,
     };
 
-    this.agent = new RL.DQNAgent(environment, {
-      gamma: 0.5,
-      epsilon: 0.05,
-      alpha: 0.1,
-      experience_add_every: 1,
-      experience_size: 5000,
-      learning_steps_per_iteration: 20,
-      num_hidden_units: 300,
-    });
+    const opt: deepqlearn.BrainOptions = {};
+    opt.temporal_window = temporal_window;
+    opt.experience_size = 30000;
+    opt.start_learn_threshold = 1000;
+    opt.gamma = 0.7;
+    opt.learning_steps_total = 200000;
+    opt.learning_steps_burnin = 3000;
+    opt.epsilon_min = 0.05;
+    opt.epsilon_test_time = 0.05;
+    opt.layer_defs = layer_defs;
+    opt.tdtrainer_options = tdtrainer_options;
+
+    this.brain = new deepqlearn.Brain(num_inputs, num_actions, opt);
   }
 
-  private readEnvironmentState(): RL.EnvironmentState {
-    const environmentState: RL.EnvironmentState = [];
+  private readEnvironmentState(): number[] {
+    const environmentState: number[] = [];
     const decisionConfigurator = this.decisionConfigurator;
     const newObjectType = decisionConfigurator.getTileObjectType();
-    const newObjectTypeCode = RLPlayer.getTileObjectTypeCode(newObjectType);
+    const newObjectTypeCode = ConvPlayer.getTileObjectTypeCode(newObjectType);
     environmentState.push(newObjectTypeCode);
 
     const world = this.world;
@@ -72,7 +110,7 @@ export class RLPlayer extends AbstractPlayer {
       for (let col = 0; col < cols; ++col) {
         const tileObjectType = rowArray[col];
         const tileObjectTypeCode =
-          RLPlayer.getTileObjectTypeCode(tileObjectType);
+          ConvPlayer.getTileObjectTypeCode(tileObjectType);
         environmentState.push(tileObjectTypeCode);
       }
     }
@@ -82,7 +120,8 @@ export class RLPlayer extends AbstractPlayer {
 
   private static getTileObjectTypeCode(type: TileObjectType): number {
     return (
-      (RLPlayer.OBJECT_TYPES.indexOf(type) + 1) / RLPlayer.OBJECT_TYPES.length
+      (ConvPlayer.OBJECT_TYPES.indexOf(type) + 1) /
+      ConvPlayer.OBJECT_TYPES.length
     );
   }
 

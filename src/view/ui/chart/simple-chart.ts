@@ -6,6 +6,7 @@ export class SimpleChart extends Phaser.GameObjects.Container {
   private records: number[];
   private recordsGraphics: Graphics;
   private maxValue: number;
+  private minValue: number;
   private tickMarks: PhaserText[];
 
   constructor(scene: Scene, config: ISimpleChartConfig) {
@@ -14,6 +15,7 @@ export class SimpleChart extends Phaser.GameObjects.Container {
     this.config = config;
     this.records = [];
     this.maxValue = 0;
+    this.minValue = Infinity;
     this.tickMarks = [];
 
     this.initBg();
@@ -42,6 +44,7 @@ export class SimpleChart extends Phaser.GameObjects.Container {
     }
 
     this.maxValue = Math2.max(this.maxValue, value);
+    this.minValue = Math2.min(this.minValue, value);
     this.tickMarks.forEach((tickMark) => tickMark.setVisible(true));
     this.drawRecords();
     this.updateTickMarks();
@@ -88,38 +91,37 @@ export class SimpleChart extends Phaser.GameObjects.Container {
   private drawRecords(): void {
     const graphics = this.recordsGraphics;
     graphics.clear();
-    graphics.lineStyle(2, this.config.lineColor);
+    graphics.fillStyle(this.config.lineColor);
 
     const records = this.records;
     const count = records.length;
     const stepX = this.getWidth() / (count - 1);
     const height = this.getHeight();
-    const stepY = height / this.maxValue;
+    const minValue = this.minValue;
+    const amplitude = this.maxValue - minValue;
+    const stepY = height / amplitude;
 
     records.forEach((record, i) => {
       const x = i * stepX;
-      const y = height - record * stepY;
+      const y = height - (record - minValue) * stepY;
 
-      if (i === 0) {
-        graphics.moveTo(x, y);
-      } else {
-        graphics.lineTo(x, y);
-      }
+      graphics.fillPoint(x, y, 3);
     });
-    graphics.stroke();
   }
 
   private updateTickMarks(): void {
     const tickMarks = this.tickMarks;
     const count = tickMarks.length;
     const height = this.getHeight();
-    const stepValue = this.maxValue / count;
-    const stepY = height / count;
-    
-    tickMarks.forEach((tickMark, i) => {
-      tickMark.setY(height - (i + 1) * stepY);
+    const minValue = this.minValue;
+    const amplitude = this.maxValue - minValue;
+    const stepValue = amplitude / (count - 1);
+    const stepY = height / (count - 1);
 
-      const value = (i + 1) * stepValue;
+    tickMarks.forEach((tickMark, i) => {
+      tickMark.setY(height - i * stepY);
+
+      const value = i * stepValue + minValue;
       tickMark.setText(value.toFixed(2));
     });
   }

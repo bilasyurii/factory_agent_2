@@ -22,6 +22,10 @@ export class Label extends Phaser.GameObjects.Text {
     this.updateLabelText();
   }
 
+  public getValue(): number {
+    return this.value;
+  }
+
   public increment(amount: number = 1): void {
     this.value += amount;
     this.updateLabelText();

@@ -25,7 +25,10 @@ export class UI extends Phaser.GameObjects.Container {
   public onSimulationEnded(totalScore: number): void {
     this.iterationLabel.increment();
     this.chart.addRecord(totalScore);
-    this.averageChart.addRecord(this.getAverage());
+
+    if (this.iterationLabel.getValue() > 20) {
+      this.averageChart.addRecord(this.getAverage());
+    }
   }
 
   private initScoreLabel(): void {
@@ -54,7 +57,7 @@ export class UI extends Phaser.GameObjects.Container {
     const chart = new SimpleChart(this.scene, {
       width: 300,
       height: 200,
-      tickMarksCount: 4,
+      tickMarksCount: 6,
       capacity: capacity,
       lineColor: color,
     });
