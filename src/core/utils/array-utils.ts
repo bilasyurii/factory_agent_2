@@ -115,12 +115,12 @@ export class ArrayUtils {
     const result = ArrayUtils.repeat(array, fullTimesCount);
     const remainderCount = amount - result.length;
     const remainder = ArrayUtils.pick2(array, remainderCount, random);
-    ArrayUtils.copy(remainder, result);
+    ArrayUtils.append(remainder, result);
     ArrayUtils.shuffle2(result, random);
     return result;
   }
 
-  public static copy<T>(from: T[], to: T[]): T[] {
+  public static append<T>(from: T[], to: T[]): T[] {
     const length = from.length;
 
     for (let i = 0; i < length; ++i) {

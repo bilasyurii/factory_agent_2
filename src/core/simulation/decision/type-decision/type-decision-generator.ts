@@ -24,10 +24,9 @@ export class TypeDecisionGenerator {
 
   public reset(): void {
     const allTypes = TypeDecisionGenerator.OBJECT_TYPES;
-    const allTypesCount = allTypes.length;
     const count = this.decisionsCount;
 
-    if (count <= allTypesCount) {
+    if (count <= allTypes.length) {
       this.types = ArrayUtils.pick2(allTypes, count, this.random);
     } else {
       this.types = ArrayUtils.multiPick2(allTypes, count, this.random);
